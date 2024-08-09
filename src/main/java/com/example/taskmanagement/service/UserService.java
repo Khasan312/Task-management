@@ -13,6 +13,7 @@ import com.example.taskmanagement.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,16 +21,16 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    private final RefreshTokenService refreshTokenService;
     private final RedisTemplate<String, Object> redisTemplate;
+    private final RefreshTokenService refreshTokenService;
 
 
     public void saveUser(UserRequest request) {
@@ -40,6 +41,9 @@ public class UserService {
         if (!request.password.equals(request.confirmPassword)) {
             throw new PasswordMismatchException("Passwords do not match");
         }
+
+        log.info("User is ready to be saved");
+
         User user = createUser(request);
         userRepository.save(user);
     }
@@ -51,6 +55,7 @@ public class UserService {
         if(!passwordEncoder.matches(authRequest.password, user.getPassword())){
             throw new NotMatchException("Вы ввели неверный пароль");
         }
+
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
         redisTemplate.opsForValue().set("refresh_token", refreshToken, 60, TimeUnit.MINUTES);
@@ -75,21 +80,11 @@ public class UserService {
         var user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NotFoundException("User not found"));
 
-        System.out.println(user.getUsername());
-        System.out.println("------------------");
         var newAccessToken = jwtService.generateToken(user);
-        var newRefreshToken = jwtService.generateRefreshToken(user);
-
-        refreshTokenService.storeRefreshToken(user.getEmail(), newRefreshToken, jwtService.getRefreshTokenExpiration());
 
         return UserDTO.builder()
                 .accessToken(newAccessToken)
-                .refreshToken(newRefreshToken)
                 .build();
-    }
-
-    public void logout(String email) {
-        redisTemplate.delete(email);
     }
 
     private User createUser(UserRequest request) {

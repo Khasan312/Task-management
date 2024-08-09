@@ -3,9 +3,12 @@ package com.example.taskmanagement.controller.users.requests;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
+@AllArgsConstructor
 public class LoginRequest {
     @NotBlank(message = "email не может быть пустым")
     @Email(message = "email должен быть валидным")

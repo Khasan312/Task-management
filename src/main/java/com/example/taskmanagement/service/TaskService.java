@@ -78,7 +78,8 @@ public class TaskService {
         Task existingTask = taskRepository.findById(taskId)
                 .orElseThrow(() -> new NotFoundException("Task not found"));
 
-        if (!existingTask.getAuthorId().equals(author.getId())) {
+        if (!existingTask.getAuthorId().equals(author.getId()) &&
+                !existingTask.getAssigneeId().equals(author.getId())) {
             throw new AccessDeniedException("You are not allowed to update this task");
         }
         User assignee = null;
@@ -98,14 +99,13 @@ public class TaskService {
         return convertToDTO(updatedTask);
     }
 
-    public void deleteTask(Long authorId, Long taskId) {
-        userRepository.findById(authorId)
-                .orElseThrow(() -> new NotFoundException("Author not found"));
+    public void deleteTask(Long author, Long taskId) {
+
 
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new NotFoundException("Task not found"));
 
-        if (!task.getAuthorId().equals(authorId)) {
+        if (!task.getAuthorId().equals(author)) {
             throw new NotFoundException("You are not allowed to delete this task");
         }
 

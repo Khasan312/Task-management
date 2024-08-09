@@ -12,10 +12,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -36,16 +35,11 @@ public class UserController {
         return AuthResponse.from(userDTO);
     }
 
-    @PostMapping("/logout")
-    public String logout(@RequestBody String email) {
-        userService.logout(email);
-        return "User logged out successfully";
-    }
-
     @PostMapping("/refresh")
-    public AuthResponse refreshToken(@RequestBody String refreshToken) {
-        UserDTO userDTO = userService.refresh(refreshToken);
-        return AuthResponse.from(userDTO);
+    public AuthResponse refreshToken(@RequestBody Map<String, String> refreshToken) {
+        String refreshTokenValue = refreshToken.get("refreshToken");
+        UserDTO userDTO = userService.refresh(refreshTokenValue);
+        return AuthResponse.refresh(userDTO);
     }
 
 }

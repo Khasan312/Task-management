@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/taskmanagement
-    username: khasan
-    password: 1
+    url: jdbc:postgresql://localhost:5432/business_skype
+    username: postgres
+    password: Bishkek312513744
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

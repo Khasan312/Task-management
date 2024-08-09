@@ -9,6 +9,11 @@ services:
     ports:
       - 5432:5432
 
+  redis:
+    image: redis:7
+    ports:
+      - 6379:6379
+
   app:
     image: openjdk:17
     build:
@@ -22,7 +27,12 @@ services:
       SPRING_SECURITY_JWT_SECRET: ay7cuTGHpdIuPVPDNV2HTT76yhgXsAl0gasOn0dar5tiV6kV6Z8V0brKlKHxwdCRSFW8X7sG2VxqTGMUwW7Gsg==
       SPRING_SECURITY_JWT_EXPIRATION: 86400000
       SPRING_SECURITY_JWT_REFRESH_EXPIRATION: 604800000
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
     ports:
       - 8080:8080
     depends_on:
       - db
+      - redis
+    volumes:
+      - ./src:/app/src
