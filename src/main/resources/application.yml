@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/taskmanagement
+    username: khasan
+    password: 1
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+
+jwt:
+  secret: ay7cuTGHpdIuPVPDNV2HTT76yhgXsAl0gasOn0dar5tiV6kV6Z8V0brKlKHxwdCRSFW8X7sG2VxqTGMUwW7Gsg==
+  expiration: 86400000
+  refreshExpiration: 604800000 # 7 days
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG

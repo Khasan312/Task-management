@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:14
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - 5432:5432
+
+  app:
+    image: openjdk:17
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_SECURITY_JWT_SECRET: ay7cuTGHpdIuPVPDNV2HTT76yhgXsAl0gasOn0dar5tiV6kV6Z8V0brKlKHxwdCRSFW8X7sG2VxqTGMUwW7Gsg==
+      SPRING_SECURITY_JWT_EXPIRATION: 86400000
+      SPRING_SECURITY_JWT_REFRESH_EXPIRATION: 604800000
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
