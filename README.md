@@ -22,12 +22,11 @@
 ### Локальная установка
 
 1. Клонируйте репозиторий:
-   git clone https://github.com/your-username/task-management-system.git
-   cd task-management-system
+   git clone https://github.com/Khasan312/Task-management.git
 
 
-2. Настройте файл application.properties в src/main/resources:
-   spring.datasource.url=jdbc:postgresql://localhost:5432/taskmanagement
+2. Настройте файл `application.properties` в `src/main/resources`:
+   spring.datasource.url=jdbc:postgresql://localhost:5432/taskmanagement_db
    spring.datasource.username=your_username
    spring.datasource.password=your_password
    spring.jpa.hibernate.ddl-auto=update
@@ -38,31 +37,33 @@
 
 
 3. Соберите проект с помощью Maven:
-   ./mvnw clean package
-
-
+      ```bash
+      ./mvnw clean package
+   
 4. Запустите приложение:
-   java -jar target/task-management-system.jar
+   ```bash
+   java -jar target/taskmanagement-0.0.1-SNAPSHOT.jar
 
 
 ### Запуск с использованием Docker
 
-1. Создайте файл .env в корне проекта:
-   POSTGRES_DB=taskmanagement
-   POSTGRES_USER=your_username
-   POSTGRES_PASSWORD=your_password
+1. Создайте файл `.env` в корне проекта:
+2. Скопируйте файл `.env.dist` в .`env`
+   - POSTGRES_DB=taskmanagement
+   - POSTGRES_USER=your_username
+   - POSTGRES_PASSWORD=your_password
 
 
 2. Запустите сервисы с использованием Docker Compose:
-   docker-compose up --build
-
+   ```bash
+   `docker-compose up --build`
 
 3. Приложение будет доступно по адресу http://localhost:8080.
 
 ## API Документация
 
 API документация доступна по адресу:
-- Swagger UI: http://localhost:8080/swagger-ui.html
+- Swagger UI: http://localhost:8080/swagger-ui/index.html
 - OpenAPI JSON: http://localhost:8080/v3/api-docs
 
 ## Запуск тестов

@@ -24,6 +24,5 @@ public class Comment {
     @Column(name = "task_id")
     private Long taskId;
     private LocalDateTime createdAt;
-
-
+    private LocalDateTime updatedAt;
 }

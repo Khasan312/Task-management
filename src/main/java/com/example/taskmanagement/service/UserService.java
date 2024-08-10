@@ -58,7 +58,8 @@ public class UserService {
 
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
-        redisTemplate.opsForValue().set("refresh_token", refreshToken, 60, TimeUnit.MINUTES);
+        String redisKey = "refresh_token:" + user.getId();
+        redisTemplate.opsForValue().set(redisKey, refreshToken, 60, TimeUnit.MINUTES);
 
         return UserDTO.builder()
                 .accessToken(jwtToken)

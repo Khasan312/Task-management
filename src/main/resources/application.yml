@@ -1,12 +1,12 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/business_skype
+    url: jdbc:postgresql://localhost:5432/taskmanagement
     username: postgres
-    password: Bishkek312513744
+    password: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -17,10 +17,10 @@ jwt:
   expiration: 86400000
   refreshExpiration: 604800000 # 7 days
 
-  data:
-    redis:
-      host: localhost
-      port: 6379
+data:
+  redis:
+    host: redis
+    port: 6379
 
 logging:
   level:

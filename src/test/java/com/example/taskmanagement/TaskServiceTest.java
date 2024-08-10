@@ -1,5 +1,6 @@
 package com.example.taskmanagement;
 
+import com.example.taskmanagement.controller.tasks.request.TaskRequest;
 import com.example.taskmanagement.dto.TaskDTO;
 import com.example.taskmanagement.entity.Task;
 import com.example.taskmanagement.entity.User;
@@ -53,26 +54,25 @@ public class TaskServiceTest {
         User assignee = new User();
         assignee.setId(2L);
 
-        TaskDTO taskDTO = TaskDTO.builder()
-                .title("Test Task")
-                .description("Task Description")
-                .status(TaskStatus.WAITING)
-                .priority(Priority.MEDIUM)
-                .assigneeId(2L)
-                .build();
+        TaskRequest taskRequest = new TaskRequest();
+        taskRequest.setTitle("Test Task");
+        taskRequest.setDescription("Task Description");
+        taskRequest.setStatus(TaskStatus.WAITING);
+        taskRequest.setPriority(Priority.MEDIUM);
+        taskRequest.setAssigneeId(2L);
 
         when(userRepository.findById(author.getId())).thenReturn(Optional.of(author));
-        when(userRepository.findById(taskDTO.getAssigneeId())).thenReturn(Optional.of(assignee));
+        when(userRepository.findById(taskRequest.getAssigneeId())).thenReturn(Optional.of(assignee));
         when(taskRepository.save(any())).thenAnswer(invocation -> {
             Task task = invocation.getArgument(0);
             task.setId(1L);
             return task;
         });
 
-        TaskDTO result = taskService.createTask(taskDTO, author);
+        TaskDTO result = taskService.createTask(taskRequest, author);
 
-        assertEquals(taskDTO.getTitle(), result.getTitle());
-        assertEquals(taskDTO.getDescription(), result.getDescription());
+        assertEquals(taskRequest.getTitle(), result.getTitle());
+        assertEquals(taskRequest.getDescription(), result.getDescription());
     }
 
 

@@ -53,7 +53,7 @@ public class TaskService {
         return convertToDTO(task);
     }
 
-    public TaskDTO createTask(TaskDTO taskDTO, User author) {
+    public TaskDTO createTask(TaskRequest taskDTO, User author) {
         User assignee = null;
         if (taskDTO.getAssigneeId() != null) {
             assignee = userRepository.findById(taskDTO.getAssigneeId())
@@ -137,6 +137,8 @@ public class TaskService {
     private CommentDTO convertToCommentDTO(Comment comment) {
         return CommentDTO.builder()
                 .content(comment.getContent())
+                .createdAt(comment.getCreatedAt())
+                .updatedAt(comment.getUpdatedAt())
                 .authorId(comment.getAuthorId())
                 .taskId(comment.getTaskId())
                 .build();

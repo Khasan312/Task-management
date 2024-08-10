@@ -20,10 +20,10 @@ import org.springframework.session.web.http.DefaultCookieSerializer;
 @EnableRedisHttpSession
 public class RedisHttpSessionConfig {
 
-    @Value("${spring.data.redis.host:localhost}")
+    @Value("${data.redis.host}")
     private String redisHost;
 
-    @Value("${spring.data.redis.port:6379}")
+    @Value("${data.redis.port}")
     private int redisPort;
 
     @Bean

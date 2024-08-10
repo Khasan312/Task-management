@@ -24,8 +24,6 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     public CommentDTO createComment(CommentRequest request, User author, Long taskId) {
-
-
         Comment comment = Comment.builder()
                 .content(request.getContent())
                 .authorId(author.getId())
@@ -35,6 +33,23 @@ public class CommentService {
 
         Comment savedComment = commentRepository.save(comment);
         return convertDTO(savedComment);
+    }
+
+    public CommentDTO updateComment(CommentRequest request, User author, Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new NotFoundException("Comment not found"));
+
+        if (!comment.getAuthorId().equals(author.getId())) {
+            throw new NotFoundException("You are not allowed to update this comment");
+        }
+        comment.setContent(request.getContent());
+        comment.setUpdatedAt(LocalDateTime.now().withNano(0));
+        commentRepository.save(comment);
+        return convertDTO(comment);
+    }
+
+    public void deleteComment(Long commentId) {
+        commentRepository.deleteById(commentId);
     }
 
     public List<CommentDTO> getCommentsByTaskId(Long taskId) {

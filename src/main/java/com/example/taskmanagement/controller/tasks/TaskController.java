@@ -6,6 +6,7 @@ import com.example.taskmanagement.dto.TaskAndCommentsDTO;
 import com.example.taskmanagement.dto.TaskDTO;
 import com.example.taskmanagement.entity.User;
 import com.example.taskmanagement.service.TaskService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +36,7 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<TaskDTO> createTask(Authentication authentication, @RequestBody TaskDTO taskDTO) {
+    public ResponseEntity<TaskDTO> createTask(Authentication authentication, @Valid @RequestBody TaskRequest taskDTO) {
         User author = (User) authentication.getPrincipal();
         TaskDTO task = taskService.createTask(taskDTO, author);
         return ResponseEntity.ok(task);
@@ -44,7 +45,7 @@ public class TaskController {
     @PutMapping("/{taskId}")
     public ResponseEntity<TaskResponse> updateTask(Authentication authentication,
                                                    @PathVariable Long taskId,
-                                                   @RequestBody TaskRequest request) {
+                                                   @Valid @RequestBody TaskRequest request) {
         User author = (User) authentication.getPrincipal();
         TaskDTO task = taskService.updateTask(request, author, taskId);
         return ResponseEntity.ok(TaskResponse.from(task));
